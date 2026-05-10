@@ -232,126 +232,50 @@ EXTRACT from the code:
 CRITICAL: Output ONLY the JSON object. No markdown, no backticks, nothing else."""
 
 
-SOLANA_INSTRUCTIONS_PROMPT = """You are an expert Solana DeFi developer. Given a backtested trading strategy with extracted trading instructions, generate a JSON file that another AI agent can use to execute the strategy on the Solana blockchain using Jupiter Aggregator (the leading Solana DEX aggregator).
+# Token mint addresses on Solana mainnet
+SOL_MINT = "So11111111111111111111111111111111111111112"
+USDC_MINT = "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v"
+JUPITER_SWAP_URL = "https://quote-api.jup.ag/v6/swap"
+JUPITER_QUOTE_URL = "https://quote-api.jup.ag/v6/quote"
 
-The output MUST be a single valid JSON object with this exact schema:
+# LLM prompt — keep it SHORT so the model actually returns valid JSON
+SOLANA_INSTRUCTIONS_PROMPT = """You are a Solana DeFi strategist. Given a trading strategy description and its extracted trading instructions, return a JSON object with these fields:
 
 {
-  "program": "jupiter",
-  "strategy_name": "Descriptive name of the strategy",
-  "ticker": "SOL/USDC or BTC/USDC etc.",
-  "data_source": "crypto",
-  "direction": "long" or "short",
-  "action": "buy" or "sell",
-  "token_in": "So11111111111111111111111111111111111111112" (SOL mint address for SOL trades),
-  "token_out": "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v" (USDC mint address),
-  "amount": "0.01",
+  "strategy_name": "Short name",
+  "ticker": "SOL/USDC",
+  "direction": "long",
+  "action": "buy",
+  "token_in": "<SOL_or_token_mint>",
+  "token_out": "<USDC_or_token_mint>",
   "amount_in_usd": 1000,
   "slippage_bps": 100,
-  "platformFeeBps": 0,
-  "asLegacyTransaction": false,
-  "compute_unit_price_micro_lamports": 0,
-  "prioritization_fee": {
-    "unit_price": 100000,
-    "unit_limit": 400000
-  },
-  "instructions": [
-    {
-      "step": 1,
-      "type": "swap",
-      "description": "Swap SOL to USDC via Jupiter",
-      "jupiter_quote_get_url": "https://quote-api.jup.ag/v6/quote?inputMint=...&outputMint=...&amount=...&slippageBps=100",
-      "jupiter_swap_post_url": "https://quote-api.jup.ag/v6/swap",
-      "method": "POST",
-      "headers": {
-        "Content-Type": "application/json"
-      },
-      "body_template": {
-        "quoteResponse": "<from_quote_api>",
-        "userPublicKey": "<user_wallet_address>",
-        "wrapAndUnwrapSol": true,
-        "dynamicComputeUnitLimit": true,
-        "prioritizationFeeLamports": "auto"
-      }
-    }
-  ],
-  "execution_bot_prompt": "You are a Solana trading bot. Execute the following swap via Jupiter aggregator...",
-  "entry_conditions": [
-    "RSI(14) < 30 (oversold)",
-    "Price crosses above SMA(20)"
-  ],
-  "exit_conditions": [
-    "RSI(14) > 70 (overbought)",
-    "Price crosses below SMA(20)"
-  ],
+  "entry_conditions": ["list from trading instructions"],
+  "exit_conditions": ["list from trading instructions"],
   "risk_management": {
     "stop_loss_pct": 5.0,
     "take_profit_pct": 10.0,
     "max_slippage_bps": 200,
-    "max_position_usd": 5000,
-    "description": "Exit position at 5% stop-loss or 10% take-profit. Max slippage 200bps. Max position $5000."
+    "max_position_usd": 5000
   },
   "position_sizing": {
-    "type": "fixed_usd",
-    "usd_amount": 1000,
-    "description": "Fixed $1000 per trade"
+    "type": "fixed|percent|kelly",
+    "usd_amount": 1000
   },
+  "execution_bot_prompt": "One-sentence instruction for an AI trading bot...",
   "metadata": {
     "backtest_id": "<run_id>",
-    "generated_at": "2026-05-10T00:00:00Z",
-    "model_used": "inclusionai/ring-2.6-1t:free",
-    "confidence": "high|medium|low",
-    "backtest_metrics": {
-      "total_return": 0.25,
-      "sharpe_ratio": 1.4,
-      "win_rate": 0.55,
-      "num_trades": 42
-    },
-    "notes": [
-      "This strategy was backtested with historical data.",
-      "Past performance does not guarantee future results.",
-      "Always test on devnet before mainnet.",
-      "Set slippage to at least 100bps for volatile tokens."
-    ],
-    "warnings": [
-      "Backtest period was only 30 days — extend for better validation",
-      "Transaction costs (gas fees) not included in backtest",
-      "Jupiter slippage may differ from backtest assumptions"
-    ],
-    "smart_money_addresses": [],
-    "audit_links": [
-      "https://github.com/jup-ag/jupiter-sdk"
-    ]
-  },
-  "required_solana_programs": [
-    {
-      "name": "Jupiter V6 Swap",
-      "address": "JUPyiwrYJFskUPiHa7hkeR8VUtAeFoSYbKedZNsDvCN",
-      "method": "POST to https://quote-api.jup.ag/v6/swap"
-    },
-    {
-      "name": "Token Program (SPL)",
-      "address": "TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA",
-      "method": "spl_token_transfer"
-    }
-  ],
-  "rpc_endpoints": [
-    "https://api.mainnet-beta.solana.com",
-    "https://solana-api.projectserum.com"
-  ]
+    "generated_at": "ISO timestamp",
+    "model_used": "<model>",
+    "confidence": "high",
+    "backtest_metrics": {"total_return": 0.25, "sharpe_ratio": 1.4, "win_rate": 0.55, "num_trades": 42},
+    "notes": ["Always test on devnet first"],
+    "warnings": ["Past performance != future results"]
+  }
 }
 
-CRITICAL RULES:
-- Replace <run_id> with the actual backtest run ID
-- Replace <user_wallet_address> with the user's actual Solana wallet public key
-- token_in and token_out MUST be actual Solana SPL token mint addresses
-- For SOL pairs, use SOL mint: So11111111111111111111111111111111111111112
-- For USDC, use: EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v
-- For BTC (renBTC): 9n4nbM75f5Ui33ZbPYXn59EwS8Ur5U6b1S4xCiF1dvJc
-- For ETH: 7dHbWXmci3dT8UFYWYZweBLXgyu7NWQqrcXAn7EeEZPv
-- Use Jupiter V6 API endpoints
-- Include the execution_bot_prompt field for other AI agents to execute
-- Output ONLY raw JSON. No markdown, no backticks, nothing else."""
+Extract from the strategy: BUY/SELL conditions, risk rules, position sizing, and execution notes.
+Output ONLY valid JSON. No markdown. No backticks."""
 
 
 class BacktestRequest(BaseModel):
