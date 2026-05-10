@@ -679,6 +679,7 @@ function AdminDashboard({ onLogout }) {
                       <th style={S.th}>Return</th>
                       <th style={S.th}>Sharpe</th>
                       <th style={S.th}>Trades</th>
+                      <th style={S.th}>Solana</th>
                       <th style={S.th}>Actions</th>
                     </tr>
                   </thead>
@@ -695,6 +696,24 @@ function AdminDashboard({ onLogout }) {
                           <td style={{...S.td, fontWeight:700, color: run.totalReturn > 0 ? C.green : run.totalReturn < 0 ? C.red : C.text }}>{pct}</td>
                           <td style={{...S.td, ...S.tdMuted}}>{run.sharpeRatio?.toFixed(2) ?? "—"}</td>
                           <td style={{...S.td, ...S.tdMuted}}>{run.numTrades ?? "—"}</td>
+                          <td style={S.td}>
+                            {run.success ? (
+                              <button style={S.delBtn2} onClick={()=>{
+                                const blob = new Blob([JSON.stringify(run.solanaInstructions||{})], {type:"application/json"});
+                                const url = URL.createObjectURL(blob);
+                                const a = document.createElement("a");
+                                a.href = url;
+                                a.download = `solana_${run.id.slice(0,8)}.json`;
+                                document.body.appendChild(a);
+                                a.click();
+                                document.body.removeChild(a);
+                                URL.revokeObjectURL(url);
+                              }} onMouseEnter={e=>{e.target.style.opacity=1;e.target.style.borderColor=C.cyan;}}
+                                onMouseLeave={e=>{e.target.style.opacity=0.7;e.target.style.borderColor=`${C.red}44`;}}>
+                                ↓ Solana JSON
+                              </button>
+                            ) : "—"}
+                          </td>
                           <td style={S.td}>
                             <button style={S.delBtn2} onClick={()=>handleDelete(run.id)}
                               onMouseEnter={e=>e.target.style.opacity=1}
@@ -778,7 +797,7 @@ export default function App() {
           metrics: { total_return:run.totalReturn, annual_return:run.annualReturn, sharpe_ratio:run.sharpeRatio, max_drawdown:run.maxDrawdown, win_rate:run.winRate, num_trades:run.numTrades, profit_factor:run.profitFactor },
           equity_curve: run.equityCurve || [],
           trades:       run.trades      || [],
-        }, instructions: run.instructions || null });
+        }, instructions: run.instructions || null, solanaInstructions: run.solanaInstructions || null, runId: run.id });
       } else {
         msgs.push({ role:"bot", type:"error", content: run.error, code: run.code });
       }
@@ -813,7 +832,7 @@ export default function App() {
       if (!res.ok) throw new Error(`Server ${res.status}`);
       const data = await res.json();
       if (data.success) {
-        setMessages(prev => [...prev, { role:"bot", type:"result", result:data.result, code:data.code, instructions: data.instructions }]);
+        setMessages(prev => [...prev, { role:"bot", type:"result", result:data.result, code:data.code, instructions: data.instructions, solanaInstructions: data.solana_instructions, runId: data.id }]);
         setActiveId(data.id);
       } else {
         setMessages(prev => [...prev, { role:"bot", type:"error", content:data.error, code:data.code }]);
