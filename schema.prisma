@@ -1,0 +1,56 @@
+// Prisma schema for AI Backtesting Platform
+// Uses SQLite for local dev — swap to PostgreSQL for production
+//
+// Setup:
+//   prisma generate     (generates Python client — needs Node.js)
+//   prisma db push      (creates/migrates the database)
+
+generator client {
+  provider             = "prisma-client-py"
+  interface            = "asyncio"
+  recursive_type_depth = 5
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model BacktestRun {
+  id           String   @id @default(cuid())
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  // Input
+  strategy     String   // user's natural language description
+  model        String   // LLM model used (e.g. "moonshotai/kimi-k2.6")
+
+  // Outcome
+  success      Boolean
+  error        String?  // populated on failure
+
+  // Core metrics (null on failure)
+  totalReturn  Float?
+  annualReturn Float?
+  sharpeRatio  Float?
+  maxDrawdown  Float?
+  winRate      Float?
+  numTrades    Int?
+  profitFactor Float?
+
+  // Text summary from LLM
+  summary      String?
+
+  // Generated code
+  code         String?
+
+  // Heavy JSON blobs — stored as TEXT, parsed at read time
+  equityCurve       String?  // JSON: [{date, value}, ...]
+  trades            String?  // JSON: [{date, action, ticker, price, shares}, ...]
+
+  // Solana transaction instructions — generated for each successful backtest
+  solanaInstructions String?  // JSON: {program, instructions, signers, metadata}
+
+  @@index([createdAt])
+  @@index([success])
+}
