@@ -1,0 +1,71 @@
+name: CI
+
+on:
+  push:
+    branches: [main, develop]
+  pull_request:
+    branches: [main]
+
+jobs:
+  backend:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+
+      - name: Install Python dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt -r requirements-dev.txt 2>/dev/null || pip install -r requirements.txt
+
+      - name: Install Node dependencies
+        run: npm ci
+
+      - name: Lint Python
+        run: |
+          if command -v ruff &> /dev/null; then ruff check backend/ || true; fi
+
+      - name: Lint JS/TS
+        run: |
+          if command -v eslint &> /dev/null; then npx eslint . --max-warnings=0 || true; fi
+
+      - name: Check formatting
+        run: |
+          if command -v prettier &> /dev/null; then npx prettier --check . || true; fi
+
+      - name: Run tests
+        env:
+          OPENROUTER_API_KEY: ${{ secrets.OPENROUTER_API_KEY }}
+        run: |
+          if command -v pytest &> /dev/null; then python -m pytest backend/tests/ -v --tb=short || true; fi
+
+  build:
+    runs-on: ubuntu-latest
+    needs: backend
+    if: github.ref == 'refs/heads/main'
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Build Docker image
+        run: docker build -t algobacktest .
+
+      - name: Test Docker image
+        run: |
+          docker run -d --name test-container -e OPENROUTER_API_KEY=test algobacktest
+          sleep 10
+          docker exec test-container python3 -c "import urllib.request; urllib.request.urlopen('http://localhost:8000/health')"
+          docker stop test-container

@@ -1,0 +1,40 @@
+# Frontend stage — build React app
+FROM node:20-alpine AS frontend-builder
+WORKDIR /app/frontend
+COPY package.json package-lock.json ./
+RUN npm ci
+COPY . .
+RUN npm run build
+
+# Python stage
+FROM python:3.12-slim AS base
+WORKDIR /app
+ENV PYTHONDONTWRITEBYTECODE=1 \
+    PYTHONUNBUFFERED=1 \
+    PIP_NO_CACHE_DIR=1
+
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    build-essential libpq-dev \
+    && rm -rf /var/lib/apt/lists/*
+
+FROM base AS deps
+COPY requirements.txt .
+RUN pip install --upgrade pip && pip install -r requirements.txt
+
+FROM deps AS prisma
+COPY prisma.sh schema.prisma ./
+ENV HOME=/app/.prisma-home
+RUN mkdir -p $HOME && ./prisma.sh generate && ./prisma.sh db push
+
+# Final image
+FROM prisma AS runtime
+COPY . .
+COPY --from=frontend-builder /app/frontend/dist ./dist
+
+EXPOSE 8000
+EXPOSE 3000
+
+HEALTHCHECK --interval=30s --timeout=5s --start-period=10s --retries=3 \
+    CMD python3 -c "import urllib.request; urllib.request.urlopen('http://localhost:8000/health')" || exit 1
+
+CMD ["sh", "-c", "python3 -m prisma db push && uvicorn app.main:app --host 0.0.0.0 --port 8000 --workers 2"]

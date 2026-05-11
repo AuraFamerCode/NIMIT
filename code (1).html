@@ -1,0 +1,420 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>YuktiAI - Build Trading Strategies at the Speed of Solana</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&amp;family=Inter:wght@300;400;500;600&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "inverse-on-surface": "#303030",
+                        "outline": "#978da1",
+                        "surface-container-low": "#1b1b1b",
+                        "on-tertiary-fixed": "#1b1b1b",
+                        "surface-container-high": "#2a2a2a",
+                        "on-background": "#e2e2e2",
+                        "primary-fixed": "#eddcff",
+                        "on-surface": "#e2e2e2",
+                        "on-secondary-container": "#00653b",
+                        "on-primary-fixed": "#290055",
+                        "on-tertiary-fixed-variant": "#474747",
+                        "surface-variant": "#353535",
+                        "primary-fixed-dim": "#d8b9ff",
+                        "tertiary-fixed": "#e2e2e2",
+                        "on-surface-variant": "#cec2d8",
+                        "inverse-surface": "#e2e2e2",
+                        "tertiary": "#c6c6c6",
+                        "surface-tint": "#d8b9ff",
+                        "surface-container-lowest": "#0e0e0e",
+                        "primary-container": "#9945ff",
+                        "surface": "#131313",
+                        "on-primary-fixed-variant": "#6300bb",
+                        "secondary": "#a0ffc3",
+                        "primary": "#d8b9ff",
+                        "on-tertiary-container": "#ffffff",
+                        "error": "#ffb4ab",
+                        "on-error": "#690005",
+                        "surface-container-highest": "#353535",
+                        "on-secondary-fixed": "#002110",
+                        "background": "#131313",
+                        "secondary-container": "#00ec91",
+                        "on-primary-container": "#ffffff",
+                        "surface-dim": "#131313",
+                        "secondary-fixed": "#56ffa8",
+                        "inverse-primary": "#7f21e5",
+                        "surface-container": "#1f1f1f",
+                        "on-tertiary": "#303030",
+                        "tertiary-fixed-dim": "#c6c6c6",
+                        "tertiary-container": "#767676",
+                        "on-primary": "#450086",
+                        "error-container": "#93000a",
+                        "on-error-container": "#ffdad6",
+                        "on-secondary": "#00391f",
+                        "outline-variant": "#4c4355",
+                        "surface-bright": "#393939",
+                        "secondary-fixed-dim": "#00e38b",
+                        "on-secondary-fixed-variant": "#00522f"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0rem",
+                        "lg": "0rem",
+                        "xl": "0rem",
+                        "full": "9999px"
+                    },
+                    "fontFamily": {
+                        "headline": ["Space Grotesk"],
+                        "body": ["Inter"],
+                        "label": ["Space Grotesk"]
+                    }
+                },
+            },
+        }
+    </script>
+<style>
+        body {
+            background-color: #131313;
+            background-image: 
+                linear-gradient(rgba(151, 141, 161, 0.03) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(151, 141, 161, 0.03) 1px, transparent 1px);
+            background-size: 48px 48px;
+            color: #e2e2e2;
+            font-family: 'Inter', sans-serif;
+        }
+        .font-headline { font-family: 'Space Grotesk', sans-serif; }
+        .glass-panel {
+            background: rgba(27, 27, 27, 0.7);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(151, 141, 161, 0.1);
+        }
+        .kinetic-glow-purple {
+            filter: blur(80px);
+            background: radial-gradient(circle, #9945ff 0%, transparent 70%);
+            opacity: 0.15;
+        }
+        .kinetic-glow-green {
+            filter: blur(80px);
+            background: radial-gradient(circle, #14f195 0%, transparent 70%);
+            opacity: 0.1;
+        }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+    </style>
+</head>
+<body class="selection:bg-secondary selection:text-on-secondary">
+<!-- Navigation Shell -->
+<nav class="fixed top-0 w-full z-50 bg-[#131313]/60 backdrop-blur-md border-b border-white/10">
+<div class="flex justify-between items-center px-6 py-4 max-w-7xl mx-auto">
+<div class="text-2xl font-bold tracking-tighter text-white font-['Space_Grotesk']">
+                YuktiAI
+            </div>
+<div class="hidden md:flex gap-8 items-center">
+<a class="text-white/70 hover:text-[#14F195] transition-colors duration-100 font-['Space_Grotesk'] tracking-tight" href="#">Features</a>
+<a class="text-white/70 hover:text-[#14F195] transition-colors duration-100 font-['Space_Grotesk'] tracking-tight" href="#">How It Works</a>
+<a class="text-white/70 hover:text-[#14F195] transition-colors duration-100 font-['Space_Grotesk'] tracking-tight" href="#">Pricing</a>
+<a class="text-white/70 hover:text-[#14F195] transition-colors duration-100 font-['Space_Grotesk'] tracking-tight" href="#">Docs</a>
+</div>
+<button class="bg-[#9945FF] text-white px-6 py-2 font-['Space_Grotesk'] font-bold scale-95 active:scale-90 transition-transform">
+                Connect Wallet
+            </button>
+</div>
+</nav>
+<main class="relative pt-24 overflow-hidden">
+<!-- Background Decorative Glows -->
+<div class="absolute top-0 -left-20 w-[500px] h-[500px] kinetic-glow-purple -z-10"></div>
+<div class="absolute top-40 -right-20 w-[600px] h-[600px] kinetic-glow-green -z-10"></div>
+<!-- Hero Section -->
+<section class="max-w-7xl mx-auto px-6 pt-20 pb-32 grid lg:grid-cols-2 gap-12 items-center">
+<div class="space-y-8">
+<div class="inline-flex items-center gap-2 px-3 py-1 bg-surface-container-high border border-outline-variant/30 text-secondary text-xs font-headline tracking-widest uppercase">
+<span class="relative flex h-2 w-2">
+<span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-secondary opacity-75"></span>
+<span class="relative inline-flex rounded-full h-2 w-2 bg-secondary"></span>
+</span>
+                    Solana Mainnet Live
+                </div>
+<h1 class="text-6xl md:text-7xl font-headline font-bold leading-[0.95] tracking-tighter text-white">
+                    Build Trading Strategies at the <span class="text-primary-container">Speed of Light.</span>
+</h1>
+<p class="text-xl text-on-surface-variant max-w-xl leading-relaxed">
+                    Harness the power of AI to synthesize, backtest, and deploy high-frequency trading strategies on Solana in seconds, not weeks.
+                </p>
+<div class="flex flex-wrap gap-4 pt-4">
+<button class="px-8 py-4 bg-secondary-container text-on-secondary-container font-headline font-bold text-lg hover:shadow-[0_0_20px_rgba(0,236,145,0.4)] transition-all active:scale-95">
+                        Get Started Free
+                    </button>
+<button class="px-8 py-4 border-2 border-outline-variant/30 text-white font-headline font-bold text-lg hover:bg-white/5 transition-all active:scale-95">
+                        View Live Demo
+                    </button>
+</div>
+</div>
+<!-- Hero Mockup: AI Prompt to Strategy -->
+<div class="relative group">
+<div class="absolute -inset-1 bg-gradient-to-r from-primary-container to-secondary-container opacity-20 blur-xl group-hover:opacity-30 transition-opacity"></div>
+<div class="relative glass-panel p-1">
+<div class="bg-surface-container-lowest p-6 space-y-6">
+<!-- Terminal Interface -->
+<div class="flex items-center justify-between border-b border-outline-variant/20 pb-4">
+<div class="flex gap-2">
+<div class="w-3 h-3 rounded-full bg-error/40"></div>
+<div class="w-3 h-3 rounded-full bg-secondary/40"></div>
+<div class="w-3 h-3 rounded-full bg-primary/40"></div>
+</div>
+<span class="text-[10px] font-headline text-outline uppercase tracking-widest">yukti_engine_v1.0.4</span>
+</div>
+<div class="space-y-4">
+<div class="flex gap-3">
+<span class="text-secondary font-headline">Prompt &gt;</span>
+<p class="text-sm text-white italic">"Create a mean-reversion strategy for SOL/USDC using 5m timeframe with 2x leverage."</p>
+</div>
+<div class="p-4 bg-surface-container border-l-2 border-primary-container">
+<div class="flex justify-between items-start mb-4">
+<h4 class="text-xs font-headline text-primary uppercase">Strategy Synthesized</h4>
+<span class="text-[10px] text-outline">Confidence: 98.4%</span>
+</div>
+<!-- Kinetic Chart Placeholder -->
+<div class="h-32 w-full flex items-end gap-1">
+<div class="w-full bg-secondary/20 h-1/2"></div>
+<div class="w-full bg-secondary/30 h-3/4"></div>
+<div class="w-full bg-secondary/40 h-2/3"></div>
+<div class="w-full bg-secondary/60 h-full border-t-2 border-secondary"></div>
+<div class="w-full bg-error/40 h-1/2 border-t-2 border-error"></div>
+<div class="w-full bg-secondary/20 h-1/4"></div>
+<div class="w-full bg-secondary/50 h-5/6 border-t-2 border-secondary"></div>
+</div>
+</div>
+<div class="grid grid-cols-3 gap-2 text-center">
+<div class="p-2 border border-outline-variant/10">
+<div class="text-[10px] text-outline uppercase">APY Est.</div>
+<div class="text-secondary font-headline font-bold">142%</div>
+</div>
+<div class="p-2 border border-outline-variant/10">
+<div class="text-[10px] text-outline uppercase">Drawdown</div>
+<div class="text-error font-headline font-bold">4.2%</div>
+</div>
+<div class="p-2 border border-outline-variant/10">
+<div class="text-[10px] text-outline uppercase">Sharpe</div>
+<div class="text-primary font-headline font-bold">3.1</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Features Bento Grid -->
+<section class="max-w-7xl mx-auto px-6 py-24">
+<div class="flex flex-col md:flex-row justify-between items-end mb-16 gap-6">
+<div class="max-w-2xl">
+<h2 class="text-xs font-headline font-bold text-secondary uppercase tracking-[0.3em] mb-4">The Engine</h2>
+<h3 class="text-4xl md:text-5xl font-headline font-bold text-white leading-tight">Advanced tools for the high-frequency era.</h3>
+</div>
+<p class="text-on-surface-variant md:text-right max-w-sm">Precision-engineered modules designed to maximize alpha in the most competitive environments.</p>
+</div>
+<div class="grid md:grid-cols-12 gap-6">
+<!-- Large Feature -->
+<div class="md:col-span-8 glass-panel p-8 group relative overflow-hidden">
+<div class="absolute -right-20 -bottom-20 w-64 h-64 bg-primary-container/10 blur-[100px] group-hover:bg-primary-container/20 transition-all"></div>
+<span class="material-symbols-outlined text-primary-container text-4xl mb-6">psychology</span>
+<h4 class="text-2xl font-headline font-bold text-white mb-4">AI Strategy Engine</h4>
+<p class="text-on-surface-variant max-w-md leading-relaxed mb-8">Natural language processing meets quantitative finance. Describe your market thesis and watch YuktiAI convert it into executable Rust code for Solana programs.</p>
+<div class="grid grid-cols-2 gap-4">
+<img class="w-full h-48 object-cover grayscale hover:grayscale-0 transition-all duration-500" data-alt="Abstract visualization of flowing neural networks and data streams in purple and neon green colors" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAkKDzjh9XL9CNnpTSmDFYdn7EgD7texRDTQ9OdjXuxGkbCa38xMamyieS7MeaPGt1pD-9Jv20XcMDt7Y4OfT3QhppI0rFypAib2o6f5aV3tzX8hcPguFQyUDySfFsUuSSWGZhGZHvcXk2V0USyDK5A4PzS5Ar9_Klk-wS_G_UWHo-Yym-fua24crgU0UL5RRj7S1XteeFA_HEgP9Z_wa1Kyw06lmWD-B_6ntN5I_2od-p7R466Mpv6OSZkF3YaBIIQJqYxz35s2IM"/>
+<img class="w-full h-48 object-cover grayscale hover:grayscale-0 transition-all duration-500" data-alt="High-tech digital interface with intricate geometric lines and glowing blockchain data structures" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAEzgFBfnYGF4ghWN_LjHn7tDd-kf_vZOlmuiVX6FBPta7hIi6W6Qz0aCSU0-Mp3JjMUL9zhq5957acm2gnhxNaisaDquGqot7n37fqjFJmIA8eBB2Ub27wx9hwsQmE6UeTpvwMi-miOg_Ujyg_69UkRmQe3MqjZuwyiasAhjfQzl2c2qTOawey5Q3yWBlgOa64yD9Y-frWl39PQBA6Cz-LUd4xQvsPSc12PGKfLkAqAhz1UhBkr-BWwALU5A__r5nG-172CsKiGIg"/>
+</div>
+</div>
+<!-- Small Feature -->
+<div class="md:col-span-4 glass-panel p-8 hover:bg-surface-container-high transition-colors">
+<span class="material-symbols-outlined text-secondary text-4xl mb-6">speed</span>
+<h4 class="text-2xl font-headline font-bold text-white mb-4">Solana-Ready</h4>
+<p class="text-on-surface-variant leading-relaxed">Sub-second execution speeds. Yukti leverages Solana's parallel processing to ensure your trades hit the block before the competition.</p>
+<div class="mt-8 pt-8 border-t border-outline-variant/20 flex justify-between items-center">
+<span class="text-xs font-headline text-outline uppercase">Execution Latency</span>
+<span class="text-secondary font-bold font-headline">~400ms</span>
+</div>
+</div>
+<!-- Column Split -->
+<div class="md:col-span-4 glass-panel p-8 hover:bg-surface-container-high transition-colors">
+<span class="material-symbols-outlined text-primary text-4xl mb-6">query_stats</span>
+<h4 class="text-2xl font-headline font-bold text-white mb-4">Advanced Backtesting</h4>
+<p class="text-on-surface-variant leading-relaxed">Simulate strategies against years of historical Solana L1 data in seconds. Accurate fee and slippage modeling included.</p>
+</div>
+<div class="md:col-span-8 glass-panel p-8 group overflow-hidden">
+<div class="flex flex-col md:flex-row gap-8 items-center">
+<div class="flex-1">
+<span class="material-symbols-outlined text-secondary text-4xl mb-6">api</span>
+<h4 class="text-2xl font-headline font-bold text-white mb-4">API-Based Trading</h4>
+<p class="text-on-surface-variant leading-relaxed">Seamlessly connect to Jupiter, Drift, and Phoenix. Execute complex multi-hop trades with a single API call.</p>
+</div>
+<div class="w-full md:w-1/3 bg-surface-container-lowest p-4 font-mono text-[10px] text-primary/80 border border-outline-variant/10">
+<div class="text-secondary">// Deploying Agent...</div>
+<div>POST /v1/execute</div>
+<div>Authorization: Bearer *******</div>
+<div>{ "pair": "SOL/USDC", "side": "buy" }</div>
+<div class="animate-pulse">_</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Why YuktiAI: The Comparison -->
+<section class="max-w-7xl mx-auto px-6 py-24 border-y border-outline-variant/10">
+<div class="text-center mb-20">
+<h2 class="text-4xl md:text-6xl font-headline font-bold text-white mb-6">The New Standard of Performance.</h2>
+<p class="text-on-surface-variant max-w-2xl mx-auto">Traditional quant tools are slow, expensive, and disconnected. YuktiAI is built for the synchronous future.</p>
+</div>
+<div class="grid md:grid-cols-2 gap-px bg-outline-variant/20">
+<!-- The Old Way -->
+<div class="bg-surface p-12 space-y-8">
+<h4 class="text-xs font-headline font-bold text-outline uppercase tracking-widest">The Old Way</h4>
+<ul class="space-y-6">
+<li class="flex items-start gap-4 opacity-50">
+<span class="material-symbols-outlined text-error">close</span>
+<div>
+<p class="text-white font-headline font-bold">Manual Python Scripts</p>
+<p class="text-sm text-on-surface-variant">Hours spent debugging boilerplate code and API integrations.</p>
+</div>
+</li>
+<li class="flex items-start gap-4 opacity-50">
+<span class="material-symbols-outlined text-error">close</span>
+<div>
+<p class="text-white font-headline font-bold">Lagging Data Feeds</p>
+<p class="text-sm text-on-surface-variant">Centralized or slow RPCs that miss critical price movements.</p>
+</div>
+</li>
+<li class="flex items-start gap-4 opacity-50">
+<span class="material-symbols-outlined text-error">close</span>
+<div>
+<p class="text-white font-headline font-bold">Fragmented Execution</p>
+<p class="text-sm text-on-surface-variant">Switching between multiple tabs and tools to manage trades.</p>
+</div>
+</li>
+</ul>
+</div>
+<!-- The Yukti Way -->
+<div class="bg-surface p-12 space-y-8 relative overflow-hidden">
+<div class="absolute inset-0 bg-gradient-to-br from-secondary/5 to-transparent pointer-events-none"></div>
+<h4 class="text-xs font-headline font-bold text-secondary uppercase tracking-widest">The Yukti Way</h4>
+<ul class="space-y-6">
+<li class="flex items-start gap-4">
+<span class="material-symbols-outlined text-secondary">check_circle</span>
+<div>
+<p class="text-white font-headline font-bold">AI Prompt Synthesis</p>
+<p class="text-sm text-on-surface-variant">Turn thoughts into strategies instantly with our LLM-bridge.</p>
+</div>
+</li>
+<li class="flex items-start gap-4">
+<span class="material-symbols-outlined text-secondary">check_circle</span>
+<div>
+<p class="text-white font-headline font-bold">Direct L1 Integration</p>
+<p class="text-sm text-on-surface-variant">Read-access to the global state at the speed of the chain.</p>
+</div>
+</li>
+<li class="flex items-start gap-4">
+<span class="material-symbols-outlined text-secondary">check_circle</span>
+<div>
+<p class="text-white font-headline font-bold">Unified Terminal</p>
+<p class="text-sm text-on-surface-variant">One interface for strategy design, testing, and live execution.</p>
+</div>
+</li>
+</ul>
+<div class="pt-8">
+<button class="w-full py-4 border border-secondary text-secondary font-headline font-bold hover:bg-secondary hover:text-on-secondary transition-all">
+                            Switch to Yukti
+                        </button>
+</div>
+</div>
+</div>
+</section>
+<!-- Vision Section -->
+<section class="max-w-7xl mx-auto px-6 py-24 relative">
+<div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full h-full kinetic-glow-purple opacity-5 -z-10"></div>
+<div class="grid lg:grid-cols-2 gap-16 items-center">
+<div class="space-y-12">
+<div>
+<h2 class="text-xs font-headline font-bold text-primary uppercase tracking-[0.3em] mb-4">Future Vision</h2>
+<h3 class="text-4xl md:text-5xl font-headline font-bold text-white leading-tight">The Decentralized Quant Network.</h3>
+</div>
+<div class="space-y-8">
+<div class="flex gap-6">
+<div class="shrink-0 w-12 h-12 flex items-center justify-center border border-primary-container text-primary-container font-headline font-bold">01</div>
+<div>
+<h5 class="text-lg font-headline font-bold text-white mb-2">Tokenized Strategies</h5>
+<p class="text-on-surface-variant text-sm">Turn your AI-generated strategies into tradable NFTs. Earn royalties whenever others use your alpha.</p>
+</div>
+</div>
+<div class="flex gap-6">
+<div class="shrink-0 w-12 h-12 flex items-center justify-center border border-primary-container text-primary-container font-headline font-bold">02</div>
+<div>
+<h5 class="text-lg font-headline font-bold text-white mb-2">RWA Integration</h5>
+<p class="text-on-surface-variant text-sm">Bridge on-chain intelligence with real-world assets. Trade stocks and commodities through synthetic Solana accounts.</p>
+</div>
+</div>
+<div class="flex gap-6">
+<div class="shrink-0 w-12 h-12 flex items-center justify-center border border-primary-container text-primary-container font-headline font-bold">03</div>
+<div>
+<h5 class="text-lg font-headline font-bold text-white mb-2">Solana DeFi 2.0</h5>
+<p class="text-on-surface-variant text-sm">Automated liquidity provision and yield farming managed by Yukti agents across the entire ecosystem.</p>
+</div>
+</div>
+</div>
+</div>
+<div class="relative aspect-square">
+<img class="w-full h-full object-cover grayscale opacity-60" data-alt="Futuristic digital cityscape representing a decentralized network with glowing violet nodes and data connections" src="https://lh3.googleusercontent.com/aida-public/AB6AXuARtIqK6zzvo3AIdC80xD6YeSDz4n8No7Oew8ZLAleow3eCh65ZUMI-KlOwzS-3_CrjHVC6qCA5JQfXrz2pE3RcMEgFcUOoajjiN1sIslCoyVrrd3UrLBtKadY6ahQ-Hwf4qw032AtOv0DcXmV4zagCT5YsgOkgKVKVzaFP9yJPyo3HQ_RalojU0LDUKw_QAs5wrHAaZWxlBghh3gCJ01rhzqWtLy4MG41my3h3x5ELrZQEsnPS40OHnDz9YvudMz4v_i-efaxGAG0"/>
+<div class="absolute inset-0 bg-gradient-to-t from-background via-transparent to-transparent"></div>
+<!-- Floating Data Points -->
+<div class="absolute top-10 left-10 p-3 glass-panel border-secondary/30">
+<div class="text-[10px] text-secondary uppercase font-headline">Live Alpha</div>
+<div class="text-white font-bold">$2.4M Volume</div>
+</div>
+<div class="absolute bottom-20 right-10 p-3 glass-panel border-primary-container/30">
+<div class="text-[10px] text-primary uppercase font-headline">Tokenized Flow</div>
+<div class="text-white font-bold">42 Active Vaults</div>
+</div>
+</div>
+</div>
+</section>
+<!-- CTA Section -->
+<section class="max-w-7xl mx-auto px-6 py-24 mb-32">
+<div class="bg-primary-container p-12 md:p-24 text-center relative overflow-hidden">
+<div class="absolute top-0 right-0 w-96 h-96 bg-white/10 blur-[100px] -rotate-45"></div>
+<div class="relative z-10">
+<h2 class="text-4xl md:text-6xl font-headline font-bold text-white mb-8 tracking-tighter">Ready to outpace the market?</h2>
+<div class="flex flex-col md:flex-row gap-4 justify-center">
+<button class="px-10 py-5 bg-white text-primary-container font-headline font-bold text-xl hover:bg-white/90 transition-colors">
+                            Launch YuktiAI
+                        </button>
+<button class="px-10 py-5 border-2 border-white/30 text-white font-headline font-bold text-xl hover:bg-white/10 transition-colors">
+                            Read the Whitepaper
+                        </button>
+</div>
+</div>
+</div>
+</section>
+</main>
+<!-- Footer -->
+<footer class="bg-[#131313] border-t border-white/5 w-full py-12">
+<div class="flex flex-col md:flex-row justify-between items-center px-8 max-w-7xl mx-auto gap-6">
+<div class="flex flex-col gap-2">
+<div class="text-lg font-bold text-white font-['Space_Grotesk']">YuktiAI</div>
+<p class="text-white/50 text-sm font-['Space_Grotesk']">Built for the Digital Sovereign</p>
+</div>
+<div class="flex gap-8">
+<a class="text-white/50 hover:text-white transition-colors font-['Space_Grotesk'] text-sm" href="#">Twitter</a>
+<a class="text-white/50 hover:text-white transition-colors font-['Space_Grotesk'] text-sm" href="#">Discord</a>
+<a class="text-white/50 hover:text-white transition-colors font-['Space_Grotesk'] text-sm" href="#">GitHub</a>
+<a class="text-white/50 hover:text-white transition-colors font-['Space_Grotesk'] text-sm" href="#">Docs</a>
+</div>
+<div class="text-white/50 font-['Space_Grotesk'] text-sm">
+                Copyright 2024 YuktiAI
+            </div>
+</div>
+</footer>
+</body></html>
