@@ -3,27 +3,21 @@
 dist/
 build/
 *.css
-*.js
 *.html
 
 # Dependencies
 node_modules/
-package-lock.json
-
-# Compiled files
-*.pyc
-__pycache__/
 
 # Environment
 .env
 .env.local
 *.env.*
 
-# Editors
-.vscode/
-.idea/
-*.swp
-*.swo
+# Cache
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
 
 # Logs
 *.log
@@ -33,17 +27,17 @@ coverage/
 htmlcov/
 .coverage
 
-# Distribution / packaging
-*.tar.gz
-*.whl
-*.egg
-*.egg-info/
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
 
-# OS generated files
+# OS
 .DS_Store
 Thumbs.db
 
-# Temporary files
-*.tmp
-*~
+# Testing
+.pytest_cache/
+.mypy_cache/
 ```
