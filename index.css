@@ -2,6 +2,18 @@
 @tailwind components;
 @tailwind utilities;
 
+@layer base {
+  html {
+    @apply h-full antialiased;
+  }
+  body {
+    @apply m-0 min-h-full bg-[#131313] text-on-surface;
+  }
+  #root {
+    @apply min-h-full;
+  }
+}
+
 @layer utilities {
   .landing-grid-bg {
     background-color: #131313;
@@ -13,11 +25,25 @@
 }
 
 @layer components {
+  /* Google Material Symbols — must set font-family or icon names render as text */
   .material-symbols-outlined {
+    font-family: "Material Symbols Outlined", sans-serif;
+    font-weight: normal;
+    font-style: normal;
+    line-height: 1;
+    letter-spacing: normal;
+    text-transform: none;
+    display: inline-block;
+    white-space: nowrap;
+    word-wrap: normal;
+    direction: ltr;
+    font-feature-settings: "liga";
+    -webkit-font-smoothing: antialiased;
     font-variation-settings: "FILL" 0, "wght" 400, "GRAD" 0, "opsz" 24;
   }
   .glass-panel {
     background: rgba(27, 27, 27, 0.7);
+    -webkit-backdrop-filter: blur(20px);
     backdrop-filter: blur(20px);
     border: 1px solid rgba(151, 141, 161, 0.1);
   }

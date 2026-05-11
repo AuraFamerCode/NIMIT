@@ -8,34 +8,44 @@ export default function Landing() {
   return (
     <div className="dark landing-grid-bg min-h-screen bg-background font-body text-on-surface selection:bg-secondary selection:text-on-secondary">
       <nav className="fixed top-0 z-50 w-full border-b border-white/10 bg-[#131313]/60 backdrop-blur-md">
-        <div className="mx-auto flex max-w-7xl items-center justify-between px-6 py-4">
-          <div className="font-headline text-2xl font-bold tracking-tighter text-white">
-            YuktiAI
+        <div className="mx-auto flex max-w-7xl flex-col gap-4 px-4 py-4 sm:flex-row sm:items-center sm:justify-between sm:gap-3 sm:px-6">
+          <div className="flex shrink-0 items-center justify-between gap-4 sm:justify-start">
+            <div className="font-headline text-xl font-bold tracking-tighter text-white sm:text-2xl">
+              YuktiAI
+            </div>
+            <div className="flex items-center gap-2 sm:hidden">
+              <Link to="/app" className="font-headline text-xs font-semibold text-secondary hover:text-white">
+                App
+              </Link>
+              <button
+                type="button"
+                className="bg-[#9945FF] px-4 py-2 font-headline text-xs font-bold text-white active:scale-95"
+              >
+                Wallet
+              </button>
+            </div>
           </div>
-          <div className="hidden items-center gap-8 md:flex">
-            <a className="font-headline tracking-tight text-white/70 transition-colors duration-100 hover:text-[#14F195]" href="#features">
+          <div className="flex flex-wrap items-center gap-x-4 gap-y-2 sm:flex-1 sm:justify-center md:justify-end md:gap-8">
+            <a className="font-headline text-xs tracking-tight text-white/70 transition-colors duration-100 hover:text-[#14F195] md:text-base" href="#features">
               Features
             </a>
-            <a className="font-headline tracking-tight text-white/70 transition-colors duration-100 hover:text-[#14F195]" href="#how">
+            <a className="font-headline text-xs tracking-tight text-white/70 transition-colors duration-100 hover:text-[#14F195] md:text-base" href="#how">
               How It Works
             </a>
-            <a className="font-headline tracking-tight text-white/70 transition-colors duration-100 hover:text-[#14F195]" href="#pricing">
+            <a className="font-headline text-xs tracking-tight text-white/70 transition-colors duration-100 hover:text-[#14F195] md:text-base" href="#pricing">
               Pricing
             </a>
-            <a className="font-headline tracking-tight text-white/70 transition-colors duration-100 hover:text-[#14F195]" href="#docs">
+            <a className="font-headline text-xs tracking-tight text-white/70 transition-colors duration-100 hover:text-[#14F195] md:text-base" href="#docs">
               Docs
             </a>
           </div>
-          <div className="flex items-center gap-3">
-            <Link
-              to="/app"
-              className="hidden font-headline text-sm font-semibold text-secondary hover:text-white sm:inline"
-            >
+          <div className="hidden items-center gap-3 sm:flex">
+            <Link to="/app" className="font-headline text-sm font-semibold text-secondary hover:text-white">
               Open app
             </Link>
             <button
               type="button"
-              className="scale-95 bg-[#9945FF] px-6 py-2 font-headline font-bold text-white transition-transform active:scale-90"
+              className="shrink-0 bg-[#9945FF] px-5 py-2 font-headline text-sm font-bold text-white transition-opacity hover:opacity-90 active:scale-95 md:px-6 md:text-base"
             >
               Connect Wallet
             </button>
@@ -43,7 +53,7 @@ export default function Landing() {
         </div>
       </nav>
 
-      <main className="relative overflow-hidden pt-24">
+      <main className="relative isolate overflow-hidden pt-24">
         <div className="kinetic-glow-purple absolute -left-20 top-0 -z-10 h-[500px] w-[500px]" />
         <div className="kinetic-glow-green absolute -right-20 top-40 -z-10 h-[600px] w-[600px]" />
 
@@ -88,7 +98,7 @@ export default function Landing() {
                     <div className="h-3 w-3 rounded-full bg-secondary/40" />
                     <div className="h-3 w-3 rounded-full bg-primary/40" />
                   </div>
-                  <span className="font-headline text-[10px] uppercase tracking-widest text-outline">yukti_engine_v1.0.4</span>
+                  <span className="font-headline text-[10px] uppercase tracking-widest text-muted-line">yukti_engine_v1.0.4</span>
                 </div>
                 <div className="space-y-4">
                   <div className="flex gap-3">
@@ -100,29 +110,29 @@ export default function Landing() {
                   <div className="border-l-2 border-primary-container bg-surface-container p-4">
                     <div className="mb-4 flex items-start justify-between">
                       <h4 className="font-headline text-xs uppercase text-primary">Strategy Synthesized</h4>
-                      <span className="text-[10px] text-outline">Confidence: 98.4%</span>
+                      <span className="text-[10px] text-muted-line">Confidence: 98.4%</span>
                     </div>
-                    <div className="flex h-32 w-full items-end gap-1">
-                      <div className="h-1/2 w-full bg-secondary/20" />
-                      <div className="h-3/4 w-full bg-secondary/30" />
-                      <div className="h-2/3 w-full bg-secondary/40" />
-                      <div className="h-full w-full border-t-2 border-secondary bg-secondary/60" />
-                      <div className="h-1/2 w-full border-t-2 border-error bg-error/40" />
-                      <div className="h-1/4 w-full bg-secondary/20" />
-                      <div className="h-5/6 w-full border-t-2 border-secondary bg-secondary/50" />
+                    <div className="flex h-32 w-full min-w-0 items-end gap-1">
+                      <div className="h-16 w-full min-w-0 bg-secondary/20" />
+                      <div className="h-24 w-full min-w-0 bg-secondary/30" />
+                      <div className="h-20 w-full min-w-0 bg-secondary/40" />
+                      <div className="h-32 w-full min-w-0 border-t-2 border-secondary bg-secondary/60" />
+                      <div className="h-16 w-full min-w-0 border-t-2 border-error bg-error/40" />
+                      <div className="h-8 w-full min-w-0 bg-secondary/20" />
+                      <div className="h-28 w-full min-w-0 border-t-2 border-secondary bg-secondary/50" />
                     </div>
                   </div>
                   <div className="grid grid-cols-3 gap-2 text-center">
                     <div className="border border-outline-variant/10 p-2">
-                      <div className="text-[10px] uppercase text-outline">APY Est.</div>
+                      <div className="text-[10px] uppercase text-muted-line">APY Est.</div>
                       <div className="font-headline font-bold text-secondary">142%</div>
                     </div>
                     <div className="border border-outline-variant/10 p-2">
-                      <div className="text-[10px] uppercase text-outline">Drawdown</div>
+                      <div className="text-[10px] uppercase text-muted-line">Drawdown</div>
                       <div className="font-headline font-bold text-error">4.2%</div>
                     </div>
                     <div className="border border-outline-variant/10 p-2">
-                      <div className="text-[10px] uppercase text-outline">Sharpe</div>
+                      <div className="text-[10px] uppercase text-muted-line">Sharpe</div>
                       <div className="font-headline font-bold text-primary">3.1</div>
                     </div>
                   </div>
@@ -168,7 +178,7 @@ export default function Landing() {
                 Sub-second execution speeds. Yukti leverages Solana&apos;s parallel processing to ensure your trades hit the block before the competition.
               </p>
               <div className="mt-8 flex items-center justify-between border-t border-outline-variant/20 pt-8">
-                <span className="font-headline text-xs uppercase text-outline">Execution Latency</span>
+                <span className="font-headline text-xs uppercase text-muted-line">Execution Latency</span>
                 <span className="font-headline font-bold text-secondary">~400ms</span>
               </div>
             </div>
@@ -207,7 +217,7 @@ export default function Landing() {
           </div>
           <div className="grid gap-px bg-outline-variant/20 md:grid-cols-2">
             <div className="space-y-8 bg-surface p-12">
-              <h4 className="font-headline text-xs font-bold uppercase tracking-widest text-outline">The Old Way</h4>
+              <h4 className="font-headline text-xs font-bold uppercase tracking-widest text-muted-line">The Old Way</h4>
               <ul className="space-y-6">
                 <li className="flex items-start gap-4 opacity-50">
                   <span className="material-symbols-outlined text-error">close</span>
@@ -271,7 +281,7 @@ export default function Landing() {
         </section>
 
         <section className="relative mx-auto max-w-7xl px-6 py-24">
-          <div className="kinetic-glow-purple pointer-events-none absolute left-1/2 top-1/2 -z-10 h-full w-full -translate-x-1/2 -translate-y-1/2 opacity-5" />
+          <div className="kinetic-glow-purple pointer-events-none absolute left-1/2 top-1/2 -z-10 min-h-[420px] w-[min(100%,56rem)] -translate-x-1/2 -translate-y-1/2 opacity-5" />
           <div className="grid items-center gap-16 lg:grid-cols-2">
             <div className="space-y-12">
               <div>

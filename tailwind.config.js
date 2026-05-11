@@ -1,15 +1,18 @@
-import forms from "@tailwindcss/forms";
-import containerQueries from "@tailwindcss/container-queries";
-
 /** @type {import('tailwindcss').Config} */
 export default {
   darkMode: "class",
-  content: ["./index.html", "./*.{js,jsx}", "./components/**/*.{js,jsx}", "./hooks/**/*.{js,jsx}"],
+  content: [
+    "./index.html",
+    "./*.{js,jsx}",
+    "./components/**/*.{js,jsx}",
+    "./hooks/**/*.{js,jsx}",
+  ],
   theme: {
     extend: {
       colors: {
         "inverse-on-surface": "#303030",
-        outline: "#978da1",
+        /** Named `muted-line` (not `outline`) to avoid clashing with Tailwind’s `outline` utilities */
+        "muted-line": "#978da1",
         "surface-container-low": "#1b1b1b",
         "on-tertiary-fixed": "#1b1b1b",
         "surface-container-high": "#2a2a2a",
@@ -69,5 +72,5 @@ export default {
       },
     },
   },
-  plugins: [forms, containerQueries],
+  plugins: [],
 };
