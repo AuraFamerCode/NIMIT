@@ -1,4 +1,5 @@
 import { useState, useRef, useEffect, useCallback } from "react";
+import { Link } from "react-router-dom";
 import { LineChart, Line, XAxis, YAxis, Tooltip, ResponsiveContainer, ReferenceLine } from "recharts";
 import { useToasts, useAPI, useLocalStorage } from "./hooks";
 import { C, S, mono } from "./styles/theme";
@@ -580,6 +581,14 @@ export default function App() {
             {!showSide && (
               <button onClick={()=>setShowSide(true)} style={{background:"none",border:"none",color:C.dim,cursor:"pointer",fontSize:18,padding:4}}>☰</button>
             )}
+            <Link
+              to="/"
+              style={{ color: C.dim, fontSize: 10, textDecoration: "none", letterSpacing: "0.06em", flexShrink: 0 }}
+              onMouseEnter={(e) => { e.currentTarget.style.color = C.text; }}
+              onMouseLeave={(e) => { e.currentTarget.style.color = C.dim; }}
+            >
+              ← Home
+            </Link>
             <span style={S.topTitle}>
               ⚡ AlgoBacktest
               <span style={S.topSub}>AI-Powered Strategy Testing</span>
