@@ -312,7 +312,6 @@ const CodeToggle = ({ code }) => {
 const ResultMsg = ({ result, code, instructions, solanaInstructions, runId }) => {
   const m = result.metrics || {};
   const fmt = (v, pct=true) => v != null ? (pct ? `${(v*100).toFixed(2)}%` : v.toFixed(2)) : "—";
-  const pos = (v) => v != null ? (v > 0 ? "pos" : v < 0 ? "neg" : "zero") : "zero";
   return (
     <div style={S.msgBot}>
       <div style={S.tag}>Backtest Complete ✓</div>
@@ -373,51 +372,7 @@ function AdminLoginScreen({ onSuccess }) {
   );
 }
 
-// ─── Sidebar ──────────────────────────────────────────────
-function Sidebar({ history, stats, activeId, onSelect, onDelete, newChat }) {
-  const EXAMPLES = [
-    "SMA 50/200 golden cross on SPY 2019–2024",
-    "RSI(14) mean reversion AAPL: buy<30, sell>70",
-    "Bollinger Band squeeze TSLA 2020–2023",
-    "MACD crossover QQQ 2021–2024",
-  ];
 
-  return (
-    <div style={S.sidebar}>
-      <div style={S.sideHead}>
-        <span style={S.sideTitle}>History</span>
-        <button style={S.newChat} onClick={newChat}>+ New</button>
-      </div>
-      <div style={S.sideScroll}>
-        {history.length === 0 && (
-          <div style={S.sideEmpty}>No runs yet.<br/>Describe a strategy to begin.</div>
-        )}
-        {history.map(item => {
-          const pct = item.totalReturn != null ? `${(item.totalReturn*100).toFixed(1)}%` : null;
-          const date = new Date(item.createdAt).toLocaleDateString("en-US",{month:"short",day:"numeric"});
-          return (
-            <div key={item.id} style={S.histItem(activeId===item.id, item.success)} onClick={()=>onSelect(item.id)}>
-              <div style={S.histStrat}>{item.strategy}</div>
-              <div style={S.histMeta}>
-                <span style={S.badge(item.success)}>{item.success?"OK":"ERR"}</span>
-                {pct && <span style={S.retVal(item.totalReturn)}>{pct}</span>}
-                <span style={S.histDate}>{date}</span>
-                <button style={S.delBtn} title="Delete" onClick={e=>{e.stopPropagation();onDelete(item.id);}}>×</button>
-              </div>
-            </div>
-          );
-        })}
-      </div>
-      {stats && (
-        <div style={S.statsBox}>
-          <div style={S.statRow}><span>Runs</span><span style={S.statVal}>{stats.totalRuns}</span></div>
-          <div style={S.statRow}><span>Success</span><span style={{...S.statVal, color:C.green}}>{stats.successRate}%</span></div>
-          {stats.bestSharpe != null && <div style={S.statRow}><span>Best Sharpe</span><span style={{...S.statVal, color:C.cyan}}>{stats.bestSharpe.toFixed(2)}</span></div>}
-        </div>
-      )}
-    </div>
-  );
-}
 
 // ─── Main App ─────────────────────────────────────────────
 export default function App() {
